@@ -2,9 +2,9 @@ package com.zendesk;
 
 public enum Direction {
   NORTH,
+  EAST,
   SOUTH,
-  WEST,
-  EAST;
+  WEST;
 
   public static Direction getValue(String val) {
     for (Direction d : Direction.values()) {

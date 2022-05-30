@@ -1,5 +1,8 @@
 package com.zendesk;
 
+import com.zendesk.validators.PlaceValidator;
+import com.zendesk.validators.Validator;
+
 import java.util.Scanner;
 
 public class ToyRobotSimulator {
@@ -14,28 +17,22 @@ public class ToyRobotSimulator {
 
       switch (commands[0]) {
         case "PLACE":
-          if (commands.length == 2 && commands[1] != null && commands[1].split(",").length == 3) {
+          if (PlaceValidator.validate(commands)) {
             var placeArgs = commands[1].split(",");
-            var direction = Direction.getValue(placeArgs[2]);
-            var position = new Position(Integer.parseInt(placeArgs[0]),
-                Integer.parseInt(placeArgs[1]));
-            if (direction != null && board.verifyPlacement(position)) {
+            var position = new Position(Integer.parseInt(placeArgs[0]), Integer.parseInt(placeArgs[1]));
+            if (board.verifyPlacement(position)) {
               //valid direction, check if the placement indexes are valid
-                board.placeRobot(new Robot(position, direction));
-
-            } else {
-              System.out.println("INVALID DIRECTION, WILL BE IGNORED.");
+                board.placeRobot(new Robot(position, Direction.getValue(placeArgs[2])));
             }
-          } else {
-            //invalid
-            System.out.println("INVALID INPUT, WILL BE IGNORED.");
           }
           break;
         case "MOVE":
           break;
         case "LEFT":
+          board.getRobot().turnLeft();
           break;
         case "RIGHT":
+          board.getRobot().turnRight();
           break;
         case "REPORT":
           board.report();

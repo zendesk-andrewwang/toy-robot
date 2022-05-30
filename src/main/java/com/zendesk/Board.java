@@ -7,6 +7,7 @@ public class Board {
   final static int sideLength = 5;
 
   private HashMap<Position, Robot> grid;
+  private Robot robot;
 
   public Board() {
     this.grid = new HashMap<>();
@@ -21,12 +22,16 @@ public class Board {
     if (grid.containsKey(position)) {
       return true;
     }
+    System.out.println("INVALID POSITION, WILL BE IGNORED.");
     return false;
   }
 
   public void placeRobot(Robot robot) {
+    this.robot = robot;
     grid.put(robot.getPosition(), robot);
   }
+
+  public Robot getRobot() { return this.robot; }
 
   public void report() {
     grid.values().forEach(robot -> {

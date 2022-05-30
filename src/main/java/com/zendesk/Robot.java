@@ -1,5 +1,8 @@
 package com.zendesk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Robot {
   private Position position;
   private Direction direction;
@@ -23,6 +26,16 @@ public class Robot {
 
   public void setDirection(Direction direction) {
     this.direction = direction;
+  }
+
+  public void turnLeft() {
+    var directions = new ArrayList<>(List.of(Direction.values()));
+    this.direction = Direction.values()[Math.floorMod((directions.indexOf(direction) - 1),Direction.values().length)];
+  }
+
+  public void turnRight() {
+    var directions = new ArrayList<>(List.of(Direction.values()));
+    this.direction = Direction.values()[Math.floorMod((directions.indexOf(direction) + 1),Direction.values().length)];
   }
 
   @Override
