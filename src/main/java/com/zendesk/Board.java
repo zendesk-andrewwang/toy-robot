@@ -22,7 +22,6 @@ public class Board {
     if (grid.containsKey(position)) {
       return true;
     }
-    System.out.println("INVALID POSITION, WILL BE IGNORED.");
     return false;
   }
 
@@ -31,12 +30,18 @@ public class Board {
     grid.put(robot.getPosition(), robot);
   }
 
+  public void moveRobot(Position newPosition) {
+    grid.put(robot.getPosition(), null);
+    grid.put(newPosition, robot);
+    robot.setPosition(newPosition);
+  }
+
   public Robot getRobot() { return this.robot; }
 
   public void report() {
-    grid.values().forEach(robot -> {
-      if(robot != null) {
-        System.out.println("Output: " + robot);
+    grid.keySet().forEach(position -> {
+      if(grid.get(position) == robot) {
+        System.out.printf("Output: %d, %d, %s%n", position.getIndexX(), position.getIndexY(), robot.getDirection());
       }
     });
   }

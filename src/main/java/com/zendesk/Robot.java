@@ -42,4 +42,19 @@ public class Robot {
   public String toString() {
     return this.position.getIndexX() + "," + this.position.getIndexY() + "," + this.direction.name();
   }
+
+  public Position scanNextMove() {
+    switch (direction) {
+      case NORTH:
+        return new Position(position.getIndexX(), position.getIndexY() + 1);
+      case SOUTH:
+        return new Position(position.getIndexX(), position.getIndexY() - 1);
+      case EAST:
+        return new Position(position.getIndexX() + 1, position.getIndexY());
+      case WEST:
+        return new Position(position.getIndexX() - 1, position.getIndexY());
+      default:
+        return position; //fixme: should throw exception
+    }
+  }
 }
