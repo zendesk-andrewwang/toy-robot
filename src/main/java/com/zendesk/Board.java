@@ -38,11 +38,9 @@ public class Board {
 
   public Robot getRobot() { return this.robot; }
 
-  public void report() {
-    grid.keySet().forEach(position -> {
-      if(grid.get(position) == robot) {
-        System.out.printf("Output: %d, %d, %s%n", position.getIndexX(), position.getIndexY(), robot.getDirection());
-      }
-    });
+  public String report() {
+    final var robot = grid.values().stream().findAny();
+
+    return robot.map(value -> "Output: " + value).orElse(null);
   }
 }
