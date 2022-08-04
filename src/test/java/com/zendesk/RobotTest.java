@@ -47,4 +47,15 @@ public class RobotTest {
         subject.turnRight();
         assertExpectedDirectionAndPosition(Direction.NORTH);
     }
+
+    @Test
+    void scanNextMove() {
+        assertEquals(subject.scanNextMove(), new Position(0, 1));
+        subject.turnRight();
+        assertEquals(subject.scanNextMove(), new Position(1, 0));
+        subject.turnRight();
+        assertEquals(subject.scanNextMove(), new Position(0, -1));
+        subject.turnRight();
+        assertEquals(subject.scanNextMove(), new Position(-1, 0));
+    }
 }

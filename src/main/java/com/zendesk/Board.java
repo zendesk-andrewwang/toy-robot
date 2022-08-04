@@ -1,5 +1,6 @@
 package com.zendesk;
 
+import com.zendesk.exception.InvalidPositionException;
 import java.util.HashMap;
 
 public class Board {
@@ -19,28 +20,38 @@ public class Board {
   }
 
   public boolean verifyPlacement(Position position) {
-    if (grid.containsKey(position)) {
-      return true;
+    return grid.containsKey(position);
+  }
+
+  public void placeRobot(Robot robot) throws InvalidPositionException {
+    if (verifyPlacement(robot.getPosition())) {
+      this.robot = robot;
+      grid.put(robot.getPosition(), robot);
+    } else {
+      throw new InvalidPositionException("INVALID POSITION, WILL BE IGNORED.");
     }
-    return false;
   }
 
-  public void placeRobot(Robot robot) {
-    this.robot = robot;
-    grid.put(robot.getPosition(), robot);
+  public void moveRobot(Position newPosition) throws InvalidPositionException {
+    if (verifyPlacement(newPosition)) {
+      grid.put(robot.getPosition(), null);
+      grid.put(newPosition, robot);
+      robot.setPosition(newPosition);
+    } else {
+      throw new InvalidPositionException("INVALID POSITION, WILL BE IGNORED.");
+    }
   }
 
-  public void moveRobot(Position newPosition) {
-    grid.put(robot.getPosition(), null);
-    grid.put(newPosition, robot);
-    robot.setPosition(newPosition);
+  public Robot getRobot() {
+    return this.robot;
   }
-
-  public Robot getRobot() { return this.robot; }
 
   public String report() {
-    final var robot = grid.values().stream().findAny();
-
-    return robot.map(value -> "Output: " + value).orElse(null);
+    for (var robot : grid.values()) {
+      if (robot != null) {
+        return "Output: " + robot;
+      }
+    }
+    return null;
   }
 }

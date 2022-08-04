@@ -44,17 +44,12 @@ public class Robot {
   }
 
   public Position scanNextMove() {
-    switch (direction) {
-      case NORTH:
-        return new Position(position.getIndexX(), position.getIndexY() + 1);
-      case SOUTH:
-        return new Position(position.getIndexX(), position.getIndexY() - 1);
-      case EAST:
-        return new Position(position.getIndexX() + 1, position.getIndexY());
-      case WEST:
-        return new Position(position.getIndexX() - 1, position.getIndexY());
-      default:
-        return position; //fixme: should throw exception
-    }
+    return switch (direction) {
+      case NORTH -> new Position(position.getIndexX(), position.getIndexY() + 1);
+      case SOUTH -> new Position(position.getIndexX(), position.getIndexY() - 1);
+      case EAST -> new Position(position.getIndexX() + 1, position.getIndexY());
+      case WEST -> new Position(position.getIndexX() - 1, position.getIndexY());
+      default -> position; //fixme: should throw exception
+    };
   }
 }
