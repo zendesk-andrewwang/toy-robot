@@ -14,7 +14,7 @@ public class Board {
     this.grid = new HashMap<>();
     for (int i = 0; i < sideLength; i++) {
       for (int j = 0; j < sideLength; j++) {
-        grid.put(new Position(i, j), null);
+        grid.put(new Position(i, j, 0), null);
       }
     }
   }
