@@ -1,7 +1,7 @@
 package com.zendesk;
 
+import com.zendesk.exception.CrushException;
 import com.zendesk.exception.InvalidPositionException;
-import com.zendesk.validators.PlaceValidator;
 import java.util.Scanner;
 
 public class ToyRobotSimulator {
@@ -19,6 +19,9 @@ public class ToyRobotSimulator {
         CommandHandler.handleInput(commands, board);
       } catch (InvalidPositionException e) {
         System.out.println(e.getMessage());
+      } catch (CrushException ce) {
+        System.out.println(ce.getMessage());
+        return;
       }
     }
   }

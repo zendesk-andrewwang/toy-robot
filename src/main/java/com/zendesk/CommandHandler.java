@@ -1,10 +1,12 @@
 package com.zendesk;
 
+import com.zendesk.exception.CrushException;
 import com.zendesk.exception.InvalidPositionException;
+import com.zendesk.validators.ObstacleValidator;
 import com.zendesk.validators.PlaceValidator;
 
 public class CommandHandler {
-    public static void handleInput(String[] commands, Board board) throws InvalidPositionException {
+    public static void handleInput(String[] commands, Board board) throws InvalidPositionException, CrushException {
         if(board.getRobot() == null && !("PLACE".equals(commands[0]))) {
             System.out.println("Ignoring commands... Robot not placed");
             return;
@@ -14,7 +16,7 @@ public class CommandHandler {
                 if (PlaceValidator.validate(commands)) {
                     var placeArgs = commands[1].split(",");
                     var position = new Position(Integer.parseInt(placeArgs[0]), Integer.parseInt(placeArgs[1]), 0);
-                    board.placeRobot(new Robot(position, Direction.getValue(placeArgs[2])));
+                    board.placeEntity(new Robot(position, Direction.getValue(placeArgs[2])));
                 }
                 break;
             case "MOVE":
@@ -43,6 +45,13 @@ public class CommandHandler {
                 break;
             case "DOWN":
                 board.getRobot().down();
+                break;
+            case "OBSTACLE":
+                if(ObstacleValidator.validate(commands)) {
+                    var placeArgs = commands[1].split(",");
+                    var position = new Position(Integer.parseInt(placeArgs[0]), Integer.parseInt(placeArgs[1]), 0);
+                    board.placeEntity(new Obstacle(position));
+                }
                 break;
             default:
                 //invalid

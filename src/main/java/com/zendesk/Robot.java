@@ -3,9 +3,8 @@ package com.zendesk;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Robot {
+public class Robot extends PlaceableEntity{
   private static final int HEIGHT_LIMIT = 4;
-  private Position position;
   private Direction direction;
 
   private RotorState rotorState;
@@ -13,20 +12,11 @@ public class Robot {
   private boolean isDamaged;
 
   public Robot(Position position, Direction direction) {
-    this.position = position;
+    super(position);
     this.direction = direction;
     this.isDamaged = false;
     this.rotorState = RotorState.CLOSED;
   }
-
-  public Position getPosition() {
-    return position;
-  }
-
-  public void setPosition(Position position) {
-    this.position = position;
-  }
-
   public Direction getDirection() {
     return direction;
   }

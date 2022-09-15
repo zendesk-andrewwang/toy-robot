@@ -1,5 +1,6 @@
 package com.zendesk;
 
+import com.zendesk.exception.CrushException;
 import com.zendesk.exception.InvalidPositionException;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ public class Board {
 
   final static int sideLength = 5;
 
-  private HashMap<Position, Robot> grid;
+  private HashMap<Position, PlaceableEntity> grid;
   private Robot robot;
 
   public Board() {
@@ -20,26 +21,40 @@ public class Board {
   }
 
   public boolean verifyPlacement(Position position) {
+    return isPositionOnBoard(position) && grid.get(position) == null;
+  }
+
+  public boolean isPositionOnBoard(Position position) {
     return grid.containsKey(position);
   }
 
-  public void placeRobot(Robot robot) throws InvalidPositionException {
-    if (verifyPlacement(robot.getPosition())) {
-      this.robot = robot;
-      grid.put(robot.getPosition(), robot);
+  public void placeEntity(PlaceableEntity entity) throws InvalidPositionException {
+    if (verifyPlacement(entity.getPosition())) {
+      if(entity instanceof Robot robotEntity) {
+        this.robot = robotEntity;
+      }
+      grid.put(entity.getPosition(), entity);
     } else {
       throw new InvalidPositionException("INVALID POSITION, WILL BE IGNORED.");
     }
   }
 
-  public void moveRobot(Position newPosition) throws InvalidPositionException {
-    if (verifyPlacement(newPosition)) {
-      grid.put(robot.getPosition(), null);
-      grid.put(newPosition, robot);
-      robot.setPosition(newPosition);
+  public void moveRobot(Position newPosition) throws InvalidPositionException,CrushException {
+    if (isPositionOnBoard(newPosition)) {
+      if(!checkObstacle(newPosition)) {
+        grid.put(robot.getPosition(), null);
+        grid.put(newPosition, robot);
+        robot.setPosition(newPosition);
+      } else {
+        throw new CrushException("CRUSHED!!!!!!!!");
+      }
     } else {
       throw new InvalidPositionException("INVALID POSITION, WILL BE IGNORED.");
     }
+  }
+
+  private boolean checkObstacle(Position position) {
+    return grid.get(position) instanceof Obstacle;
   }
 
   public Robot getRobot() {
